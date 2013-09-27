@@ -1,0 +1,50 @@
+{
+  "name": "composable",
+  "repo": "lge88/composable",
+  "description": "composable",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {},
+  "development": {
+    "lge88/backbone": "*",
+    "lge88/uuid": "*",
+    "lge88/expect.js": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lge88/composable.git"
+  },
+  "_examples": "https://github.com/lge88/composable/tree/master/examples",
+  "_test": "https://github.com/lge88/composable/tree/master/test",
+  "_homepage": "https://github.com/lge88/composable",
+  "scripts": [
+    "lib/index.js"
+  ],
+  "styles": [],
+  "main": "lib/index.js",
+  "_rename_": [
+    "component.json",
+    "package.json",
+    "Makefile",
+    "examples/index.html",
+    "examples/main.js",
+    "examples/main.css",
+    "test/index.html",
+    "test/test.js"
+  ],
+  "_ise_paths_": [
+    "lib",
+    "lib-client"
+  ],
+  "_auto_update_file_list_": {
+    "folders": [
+      "lib"
+    ]
+  },
+  "_auto_index_files_": [],
+  "paths": [
+    "/home/GL/Develop/js/ise/lib",
+    "/home/GL/Develop/js/ise/lib-client"
+  ],
+  "remotes": []
+}
