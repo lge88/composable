@@ -2,6 +2,7 @@
 var uuid = require( 'uuid' );
 var Backbone = require( 'backbone' );
 var expect = require( 'expect.js' );
+var composable = require( 'composable' );
 
 describe( 'composable', function() {
 
@@ -105,6 +106,24 @@ describe( 'composable', function() {
 
   } );
 
+  it( '#use multiple models', function() {
+
+    var M1 = composable().use( {
+      instanceMembers: { xy: function() { return this.x*this.y; } },
+      classMembers: { type: 'M1' }
+    } ).getComposed();
+
+    var M2 = composable().use( {
+      instanceMembers: { xy: function() { return this.x + this.y; } }
+    } ).getComposed();
+
+    var m1 = new M1( { _type: 'M1', x: 10, y: 20 } );
+    var m2 = new M2( { _type: 'M2', x: 10, y: 20 } );
+
+    expect( m1.xy() ).to.be.eql( 200 );
+    expect( m2.xy() ).to.be.eql( 30 );
+
+  } );
 
   it( '#use.instance&class', function() {
     var composable = require( 'composable' );
