@@ -105,11 +105,53 @@ describe( 'composable', function() {
 
   } );
 
-  it( '#use', function() {
+
+  it( '#use.instance&class', function() {
     var composable = require( 'composable' );
 
-    var M = composable()
-      .use( Backbone.Model )
+    // var M = composable();
+    var M = composable( Backbone.Model, {
+        classMembers: composable.classMembers
+      } )
+      .use( {
+        instanceMembers: {
+          createObject: function() {
+            return { x: 1, y: 2 };
+          }
+        },
+        classMembers: {
+          nextId: function() {
+            var maxId = 1;
+            return function() {
+              return maxId++;
+            };
+          }(),
+          create: function( json ) {
+            debugger;
+            var ret = new this( json );
+            ret.set( 'id', this.nextId() );
+            return ret;
+          },
+          factory: {}
+        }
+      } )
+      .getComposed();
+
+    var m1 = M.create();
+    var m2 = M.create();
+    expect( m1.id ).to.be( 1 );
+    expect( m2.id ).to.be( 2 );
+
+    expect( m1.createObject() ).to.eql( { x: 1, y: 2 } );
+
+  } );
+
+  it( '#use.pre', function() {
+    var composable = require( 'composable' );
+
+    var M = composable( Backbone.Model, {
+      classMembers: composable.classMembers
+    } )
       .use( {
         classMembers: {
           nextId: function() {
@@ -119,7 +161,8 @@ describe( 'composable', function() {
             };
           }(),
           create: function( json ) {
-            var ret = new this.prototype.constructor( json );
+            debugger
+            var ret = new this( json );
             ret.set( 'id', this.nextId() );
             return ret;
           }
@@ -177,8 +220,9 @@ describe( 'composable', function() {
       return json;
     };
 
-    var ISEModel = require( 'composable' )()
-      .use( Backbone.Model )
+    var ISEModel = require( 'composable' )( Backbone.Model, {
+      classMembers: require( 'composable' ).classMembers
+    } )
       .use( bbCreate )
       .pre( 'create', parseArgs )
       .getComposed();
@@ -207,7 +251,9 @@ describe( 'composable', function() {
       return model;
     };
 
-    var ISEModel = require( 'composable' )()
+    var ISEModel = require( 'composable' )( Backbone.Model, {
+      classMembers: require( 'composable' ).classMembers
+    } )
       .use( Backbone.Model )
       .use( bbCreate )
       .post( 'create', setId )
